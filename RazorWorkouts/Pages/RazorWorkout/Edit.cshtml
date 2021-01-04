@@ -8,7 +8,10 @@
 <h2 class="text-info">@Model.WorkoutSets.Name</h2>
 <br />
 
-
+<div class="border container" style="padding:30px;">
+    <a class='btn btn-danger text-white' style='cursor:pointer; width:70px;'
+      onclick="AddItem(@Model.WorkoutSets.Id);"  >Add</a>
+</div>
 
 <div class="border container" style="padding:30px;">
     <form method="post">
@@ -94,4 +97,6 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Workout.js"></script>
+
 }

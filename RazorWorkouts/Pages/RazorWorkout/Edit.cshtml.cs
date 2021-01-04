@@ -33,16 +33,16 @@ namespace RazorWorkouts.Pages.RazorWorkout
             Workouts = await _db.Workout.Where(x => x.WorkoutSets.Id == WorkoutSets.Id).ToListAsync();
       
         }
+       
         public async Task<IActionResult> OnPost()
         {
             // TODO ability to add workouts to workout sets
-
+            // Create an API to handle this call
 
             if (ModelState.IsValid)
             {
 
                 
-
 
                 var workoutsFromDb = await _db.Workout.Where (x => x.WorkoutSets.Id == WorkoutSets.Id).ToListAsync();
                 // ad
