@@ -65,7 +65,7 @@ namespace RazorWorkouts.Pages.RazorWorkout
 
                 await _db.SaveChangesAsync();
 
-                return RedirectToPage("Index");
+                return Page();
             }
             return RedirectToPage();
         }

@@ -21,7 +21,6 @@
 }
 
 function DeleteWorkoutSet(id) {
-    //'/api/Workout?id ='+${
 
     var url = "/api/Workout?id=" + id;
 

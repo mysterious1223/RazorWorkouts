@@ -10,7 +10,7 @@ using RazorWorkouts.Model;
 
 namespace RazorWorkouts.Controllers
 {
-    [Route("api/Workout")]
+    //[Route("api/Workout")]
     [ApiController]
     public class WorkoutController : Controller
     {
@@ -22,14 +22,14 @@ namespace RazorWorkouts.Controllers
             _db = db;
         }
 
-        
+        [Route("api/Workout/GetAll")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Json(new { data = await _db.Workout.ToListAsync() });
         }
 
-
+        [Route("api/Workout")]
         [HttpPost]
         public async Task<IActionResult> CreateRecord(int id)
         {
@@ -54,21 +54,39 @@ namespace RazorWorkouts.Controllers
 
         }
 
+        // Add an api call to remove each individual workouts
 
 
-        //To delete workout sets, how do we delete individual workouts? TODO
+        [Route("api/Workout")]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
 
-            var bookFromDb = await _db.WorkoutSets.FirstOrDefaultAsync(u => u.Id == id);
-            if (bookFromDb == null)
+            var WorkoutSetFromDb = await _db.WorkoutSets.FirstOrDefaultAsync(u => u.Id == id);
+            var WorkoutsFromDb = await _db.Workout.Where(x => x.WorkoutSets.Id == WorkoutSetFromDb.Id).ToListAsync();
+
+
+            if (WorkoutSetFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Deleting" });
             }
 
+
+            
             // we need to delete each indiviual workouts too first
-            _db.WorkoutSets.Remove(bookFromDb);
+
+            if (WorkoutSetFromDb.Workout.Count() > 0)
+            {
+                foreach (var work in WorkoutsFromDb)
+                {
+                    _db.Workout.Remove(work);
+                }
+            }
+            
+           
+
+
+            _db.WorkoutSets.Remove(WorkoutSetFromDb);
             await _db.SaveChangesAsync();
             return Json(new { success = true, message = "Delete successful" });
 
