@@ -39,3 +39,20 @@ function DeleteWorkoutSet(id) {
         }
     });
 }
+function DeleteWorkout(id) {
+    var url = "/api/Workout/DeleteWorkout?id=" + id;
+
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        success: function (data) {
+            if (data.success) {
+                toastr.success(data.message);
+                location.reload();
+            }
+            else {
+                toastr.error(data.message);
+            }
+        }
+    });
+}

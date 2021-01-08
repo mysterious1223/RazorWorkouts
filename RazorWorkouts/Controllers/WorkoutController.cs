@@ -65,14 +65,11 @@ namespace RazorWorkouts.Controllers
             var WorkoutSetFromDb = await _db.WorkoutSets.FirstOrDefaultAsync(u => u.Id == id);
             var WorkoutsFromDb = await _db.Workout.Where(x => x.WorkoutSets.Id == WorkoutSetFromDb.Id).ToListAsync();
 
-
             if (WorkoutSetFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Deleting" });
             }
 
-
-            
             // we need to delete each indiviual workouts too first
 
             if (WorkoutSetFromDb.Workout.Count() > 0)
@@ -82,12 +79,26 @@ namespace RazorWorkouts.Controllers
                     _db.Workout.Remove(work);
                 }
             }
-            
-           
-
 
             _db.WorkoutSets.Remove(WorkoutSetFromDb);
             await _db.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete successful" });
+
+        }
+        [Route("api/Workout/DeleteWorkout")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteWorkout(int id)
+        {
+
+            var WorkoutFromDb = await _db.Workout.FirstOrDefaultAsync(u => u.Id == id);
+            if (WorkoutFromDb == null)
+            {
+                return Json(new { success = false, message = "Error while Deleting" });
+            }
+
+            _db.Workout.Remove(WorkoutFromDb);
+            await _db.SaveChangesAsync();
+
             return Json(new { success = true, message = "Delete successful" });
 
         }
